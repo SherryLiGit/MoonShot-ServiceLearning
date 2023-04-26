@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
+import axios from 'axios'
 
 const requirement = reactive({
   Email: '',
@@ -10,7 +11,26 @@ const requirement = reactive({
 
 const onSubmit = () => {
   console.log('submit!')
+  axios({
+    // 默认请求方式为get
+    method: 'post',
+    url: '/api/postRequirement',
+    // 传递参数
+    data: {
+      ActivityName: requirement.ActivityName,
+      Introduction: requirement.Introduction
+    },
+    responseType: 'json'
+  }).then(response => {
+    console.log(response)
+  }).catch(error => {
+    console.log("error")
+  });
 }
+
+
+
+
 </script>
 
 
@@ -35,6 +55,9 @@ const onSubmit = () => {
           </el-form-item>
           <el-form-item label="预计招募人数 Estimated Number of Recruits">
             <el-input v-model="requirement.VolunteerNumber" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
